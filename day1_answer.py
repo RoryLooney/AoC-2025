@@ -9,21 +9,26 @@ def AoC_file_opener(file):
     return AoC_input
 
 rotations = AoC_file_opener("day1_input.txt")
-start = 50
+
+position = 50
 zeros = 0
 
 for rotation in rotations:
-    if rotation[0] == "L":
-        start = start - int(rotation.strip("L"))
+    direction = rotation[0]
+    rotation = int(rotation.strip(direction))
+    
+    if direction == "L":
+        if (position - rotation) < 0:
+            zeros += abs((100 + position - rotation) // 100)
+            if position != 0:
+                zeros += 1
+        position = (position - rotation) % 100
+        if position == 0:
+            zeros += 1
+    elif direction == "R":
+        zeros += (position + rotation) // 100
+        position = (position + rotation) % 100
 
-    else:
-        start = start + int(rotation.strip("R"))
-
-    divisor = start // 100
-    start = start%100
-
-    if start == 0:
-        zeros += 1 +abs(divisor)
 
 print (zeros)
-print(abs(-102))
+
