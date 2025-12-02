@@ -19,7 +19,6 @@ for num_range in ranges:
     for i in range(int(num_range[0]),int(num_range[1])+1):
         all_nums.append(i)
 
-# remove all odd lengthed numbers
 total = 0
 
 
