@@ -40,7 +40,7 @@ for i in range(0,len(all_nums)):
         #print(number)
         total += int(number)
 
-print(total)
+print(f"part 1 ans:{total}")
 
 
 
