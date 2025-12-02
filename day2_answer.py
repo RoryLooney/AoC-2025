@@ -6,13 +6,6 @@ def AoC_file_opener(file):
     AoC_input = file.read()
     return(AoC_input)
     
-def remove_odd_lengths(input_list):
-    new_list = []
-    for i in range(0,len(input_list)):
-        if len(str(input_list[i]))%2 ==0:
-            new_list.append(input_list[i])
-    return(new_list)
-
 
 AoC_input = AoC_file_opener("day2_input.txt")
 
@@ -27,7 +20,6 @@ for num_range in ranges:
         all_nums.append(i)
 
 # remove all odd lengthed numbers
-#all_nums = remove_odd_lengths(all_nums)
 total = 0
 
 
@@ -37,7 +29,6 @@ for i in range(0,len(all_nums)):
     last_half = number[len(str(number))//2:len(str(number))]
 
     if first_half == last_half:
-        #print(number)
         total += int(number)
 
 print(f"part 1 ans:{total}")
