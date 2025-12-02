@@ -30,7 +30,23 @@ for i in range(0,len(all_nums)):
     if first_half == last_half:
         total += int(number)
 
-print(f"part 1 ans:{total}")
+print(f"part 1 ans: {total}")
+#part 2
 
+all_nums = []
+total = 0
 
+for num_range in ranges:
+    num_range = num_range.split("-")
 
+    for i in range(int(num_range[0]),int(num_range[1])+1):
+        all_nums.append(i)
+
+for num in all_nums:
+
+    match = re.search(r'^([0-9]+)\1+$',str(num))
+    try:
+        total += int(match.string)
+    except:
+        continue
+print(f"part 2 ans: {total}")
