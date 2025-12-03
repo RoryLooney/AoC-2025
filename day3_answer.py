@@ -55,31 +55,13 @@ for bank in battery_banks:
         except:
             cell_values.append((int(bank[i]),i))
 
-    for i in range(cell_values[0][1]+1,len(bank)-10):
-        try:
-            if cell_values[1][0] < int(bank[i]):
-                cell_values[1] = (int(bank[i]),i)
-        except:
-            cell_values.append((int(bank[i]),i))
 
-    for i in range(cell_values[1][1]+1,len(bank)-9):
-        try:
-            if cell_values[2][0] < int(bank[i]):
-                cell_values[2] = (int(bank[i]),i)
-        except:
-            cell_values.append((int(bank[i]),i))
+    # idk how to do it better(theres gotta be a way but i am once again too god damn lazy)
+    #fundamentally it does the job and looks nicer so its good enough 
 
-    # i am too lazy to do this properly, but if it works it works!
+    for j in range(1,12):
+        greedy_search(cell_values,j-1,11-j,j)
 
-    greedy_search(cell_values,2,8,3)
-    greedy_search(cell_values,3,7,4)
-    greedy_search(cell_values,4,6,5)
-    greedy_search(cell_values,5,5,6)
-    greedy_search(cell_values,6,4,7)
-    greedy_search(cell_values,7,3,8)
-    greedy_search(cell_values,8,2,9)
-    greedy_search(cell_values,9,1,10)
-    greedy_search(cell_values,10,0,11)
     
     joltage = ""
 
