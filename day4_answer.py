@@ -49,5 +49,37 @@ for y in range(0,len(paper_roll_map)):
 
 print(f"part 1 ans: {avialable_rolls}")
 
+# part two! 
 
+avialable_rolls = 0
+changed = True
+while changed == True:
+    changed = False
+
+    for y in range(0,len(paper_roll_map)):
+
+        x_max = len(paper_roll_map[y])-1
+        y_max = len(paper_roll_map)-1
+
+        for x in range(0,len(paper_roll_map[y])):
+            at_count = 0
+            paper_roll_map[y] = list(paper_roll_map[y])
+
+            if paper_roll_map[y][x] == "@":
+
+                at_count += neighbour_checker(x,y,1,1,y_max,x_max)
+                at_count += neighbour_checker(x,y,1,0,y_max,x_max)
+                at_count += neighbour_checker(x,y,1,-1,y_max,x_max)
+                at_count += neighbour_checker(x,y,0,1,y_max,x_max)
+                at_count += neighbour_checker(x,y,0,-1,y_max,x_max)
+                at_count += neighbour_checker(x,y,-1,1,y_max,x_max)
+                at_count += neighbour_checker(x,y,-1,0,y_max,x_max)
+                at_count += neighbour_checker(x,y,-1,-1,y_max,x_max)
+
+                if at_count < 4:
+                    paper_roll_map[y][x] = "."
+                    avialable_rolls += 1
+                    changed = True
+
+print(f"part 2 ans: {avialable_rolls}")
 
