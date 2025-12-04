@@ -23,6 +23,7 @@ def neighbour_checker(x_cord,y_cord,x_offest,y_offest,y_max,x_max):
 
 paper_roll_map = AoC_file_opener("day4_input.txt")
 avialable_rolls = 0
+possible_offsets = [(1,1),(1,0),(1,-1),(0,1),(0,-1),(-1,1),(-1,0),(-1,-1)]
 
 for y in range(0,len(paper_roll_map)):
 
@@ -34,14 +35,9 @@ for y in range(0,len(paper_roll_map)):
 
         if paper_roll_map[y][x] == "@":
 
-            at_count += neighbour_checker(x,y,1,1,y_max,x_max)
-            at_count += neighbour_checker(x,y,1,0,y_max,x_max)
-            at_count += neighbour_checker(x,y,1,-1,y_max,x_max)
-            at_count += neighbour_checker(x,y,0,1,y_max,x_max)
-            at_count += neighbour_checker(x,y,0,-1,y_max,x_max)
-            at_count += neighbour_checker(x,y,-1,1,y_max,x_max)
-            at_count += neighbour_checker(x,y,-1,0,y_max,x_max)
-            at_count += neighbour_checker(x,y,-1,-1,y_max,x_max)
+            for offset in possible_offsets:
+
+                at_count += neighbour_checker(x,y,offset[0],offset[1],y_max,x_max)
 
             if at_count < 4:
                 avialable_rolls += 1
@@ -53,6 +49,8 @@ print(f"part 1 ans: {avialable_rolls}")
 
 avialable_rolls = 0
 changed = True
+possible_offsets = [(1,1),(1,0),(1,-1),(0,1),(0,-1),(-1,1),(-1,0),(-1,-1)]
+
 while changed == True:
     changed = False
 
@@ -67,14 +65,9 @@ while changed == True:
 
             if paper_roll_map[y][x] == "@":
 
-                at_count += neighbour_checker(x,y,1,1,y_max,x_max)
-                at_count += neighbour_checker(x,y,1,0,y_max,x_max)
-                at_count += neighbour_checker(x,y,1,-1,y_max,x_max)
-                at_count += neighbour_checker(x,y,0,1,y_max,x_max)
-                at_count += neighbour_checker(x,y,0,-1,y_max,x_max)
-                at_count += neighbour_checker(x,y,-1,1,y_max,x_max)
-                at_count += neighbour_checker(x,y,-1,0,y_max,x_max)
-                at_count += neighbour_checker(x,y,-1,-1,y_max,x_max)
+                for offset in possible_offsets:
+
+                    at_count += neighbour_checker(x,y,offset[0],offset[1],y_max,x_max)
 
                 if at_count < 4:
                     paper_roll_map[y][x] = "."
