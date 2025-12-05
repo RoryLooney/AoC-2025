@@ -8,48 +8,28 @@ def AoC_file_opener(file):
     file.close
     return AoC_input
 
-def range_checker(big_ranges):
-    ranges = list(big_ranges.keys())
-    for i in range(0,len(ranges)):
-        ranges[i]=ranges[i].split("-")
-    big_ranges = {}
+def sort_list(list_to_sort):
+    for i in range(0,len(list_to_sort)):
+        for j in range(0,len(list_to_sort)-1):
+            if int(list_to_sort[i][0]) < int(list_to_sort[j][0]):
+                list_to_sort[i],list_to_sort[j] = list_to_sort[j],list_to_sort[i]
+    return list_to_sort
 
-    for i in range(0,len(ranges)):
-        for j in range(0,len(ranges)):
+def check_if_in_range(range_1,range_2):
+    lower_bound_range_1,upper_bound_range_1 = int(range_1[0]),int(range_1[1])
+    lower_bound_range_2,upper_bound_range_2 = int(range_2[0]),int(range_2[1])
 
-
-            #case when the starting range is completly inside another
-            if int(ranges[j][0])<int(ranges[i][0])<int(ranges[i][1])<int(ranges[j][1]):
-                ranges[i] = [ranges[i][0],ranges[j][1]]
-            #case when ends are the same
-            elif int(ranges[i][1])==int(ranges[j][1]):
-                if int(ranges[i][0]) > int(ranges[j][0]):
-                    ranges[i] = [ranges[j][0],ranges[i][1]]
-                else:
-                    ranges[i] = [ranges[i][0],ranges[i][1]]
-            #case when starts are the same
-            elif int(ranges[i][0])==int(ranges[j][0]):
-                if int(ranges[i][1]) > int(ranges[j][1]):
-                    ranges[i] = [ranges[i][0],ranges[i][1]]
-                else:
-                    ranges[i] = [ranges[j][0],ranges[j][1]]
-            #case when first ends inside the second range
-            elif int(ranges[i][0])<int(ranges[j][0])<int(ranges[i][1])<int(ranges[j][1]):
-                ranges[i] = [ranges[i][0],ranges[j][1]]
-            #case when first range starts in the second range
-            elif int(ranges[j][0])<int(ranges[i][0])<int(ranges[j][1])<int(ranges[i][1]):
-                ranges[i] = [ranges[j][0],ranges[i][1]]
-
-
-
-        big_ranges[f"{ranges[i][0]}-{ranges[i][1]}"]="1"
-
-    return big_ranges
-    
+    if upper_bound_range_1 >= lower_bound_range_2: # when true the second range is in some part of range 1
+        if upper_bound_range_2>upper_bound_range_1:
+            return True, lower_bound_range_1,upper_bound_range_2
+        else:
+            return True, lower_bound_range_1,upper_bound_range_1
+    else:
+        return False, lower_bound_range_1,upper_bound_range_1
 
 #too lazy to do the nessacry parsing in code so make sure to seperate ids and ranges before running!
-ranges = AoC_file_opener("test.txt")
-freshness_ids = AoC_file_opener("tesr2.txt")
+ranges = AoC_file_opener("day5_input_ranges.txt")
+freshness_ids = AoC_file_opener("day5_input_ids.txt")
 
 for i in range(0,len(ranges)):
     ranges[i]=ranges[i].split("-")
@@ -68,23 +48,41 @@ print(f"part 1 ans: {fresh_items}")
 
 ranges = AoC_file_opener("day5_input_ranges.txt")
 
-total_fresh_ids = 0
-big_ranges_dict = {}
-for line in ranges:
-    big_ranges_dict[line]="1"
-
-for i in range(0,1000):
-    big_ranges_dict = range_checker(big_ranges_dict)
-
-
-ranges = list(big_ranges_dict.keys())
 for i in range(0,len(ranges)):
     ranges[i]=ranges[i].split("-")
-for line in ranges:
-    total_fresh_ids += int(line[1])-int(line[0])+1
 
-print(total_fresh_ids)
-    
+sorted_ranges = sort_list(ranges)
+current_lower_bound = 0
+current_upper_bound = 0
+previous_upper_bound = 0
+merged_range = False
+big_ranges = []
+
+for i in range(0,len(sorted_ranges)-1):
+
+    merged_range,current_lower_bound,current_upper_bound = check_if_in_range(sorted_ranges[i],sorted_ranges[i+1])
+
+    if merged_range == True:
+        if previous_upper_bound > current_upper_bound:
+            sorted_ranges[i+1]=current_lower_bound,previous_upper_bound
+        else:
+            sorted_ranges[i+1]=current_lower_bound,current_upper_bound
+            previous_upper_bound = current_upper_bound
 
 
-    
+    elif merged_range == False:
+        big_ranges.append(f"{current_lower_bound}-{current_upper_bound}")
+        previous_upper_bound = 0
+
+big_ranges.append(f"{current_lower_bound}-{current_upper_bound}")
+
+
+for i in range(0,len(big_ranges)):
+    big_ranges[i]=big_ranges[i].split("-")
+
+total = 0
+
+for line in big_ranges:
+    total += int(line[1]) -int(line[0]) +1
+
+print(f"part 2 ans: {total}")
