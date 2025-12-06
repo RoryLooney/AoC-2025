@@ -35,3 +35,38 @@ for i in range(0,len(maths_homework[0])):
     total += question_ans
 
 print(f"day 6 part 1 ans: {total}")
+
+#part 2!
+
+maths_homework = AoC_file_opener("day6_input.txt")
+
+adding = False
+multing = False
+total = 0
+running_total = 0
+
+for i in range(0,len(maths_homework[0])):
+
+    if maths_homework[4][i] == maths_homework[3][i] == maths_homework[2][i] == maths_homework[1][i] == maths_homework[0][i]: 
+        total += running_total
+
+        running_total = 0
+
+    if maths_homework[4][i] == "+":
+        adding = True
+        multing = False
+
+    elif maths_homework[4][i] == "*":
+        adding = False
+        multing = True
+    try:
+        num = int(f"{maths_homework[0][i]}{maths_homework[1][i]}{maths_homework[2][i]}{maths_homework[3][i]}")
+        if adding == True:
+            running_total = running_total + num
+        if multing == True:
+            if running_total == 0:
+                running_total = 1
+            running_total = running_total * num
+    except:
+        pass
+print(total)
